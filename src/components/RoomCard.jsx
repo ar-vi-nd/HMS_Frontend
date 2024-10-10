@@ -1,7 +1,7 @@
 import React from "react";
 
-const RoomCard = ({ type, availableRooms=0, price, services, days=0 , rooms, updateRooms, bookHotel}) => {
-  const totalPrice = price * days*rooms;
+const RoomCard = ({ type, availableRooms=0, price, services, days=0 , bookHotel}) => {
+  const totalPrice = price * days;
 
   return (
     <div
@@ -54,10 +54,10 @@ const RoomCard = ({ type, availableRooms=0, price, services, days=0 , rooms, upd
             id="rooms"
             min="1"
             max={availableRooms}
-            value={rooms}
+            value={1}
             onChange={(e)=>(updateRooms(e.target.value))}
             className="border rounded p-1 w-16 text-center text-sm"
-            disabled={days===0||availableRooms===0}
+            disabled={true}
             />
         </div>
         <div className="text-right">
@@ -70,7 +70,7 @@ const RoomCard = ({ type, availableRooms=0, price, services, days=0 , rooms, upd
 
       {/* Book Now Button */}
       <div className="mt-4 flex justify-center">
-        <button onClick={()=>(bookHotel(type.toLowerCase(),rooms))} disabled={days===0||availableRooms===0} className="bg-blue-600 text-white font-semibold py-2 px-6 rounded-full shadow-md hover:bg-blue-700 transition duration-200 disabled:bg-gray-400">
+        <button onClick={()=>(bookHotel(type.toLowerCase()))} disabled={days===0||availableRooms===0} className="bg-blue-600 text-white font-semibold py-2 px-6 rounded-full shadow-md hover:bg-blue-700 transition duration-200 disabled:bg-gray-400">
           Book Now
         </button>
       </div>

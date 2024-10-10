@@ -4,7 +4,7 @@ import App from './App.jsx'
 import './index.css'
 import { UserProvider } from './context/userContext.jsx'
 import { createBrowserRouter,RouterProvider } from 'react-router-dom'
-import {Home,About,Login,Signup,Hotels,Hotel,BookingDetails} from './pages/'
+import {Home,About,Login,Signup,Hotels,Hotel,BookingDetailsPage,Admin, AdminDash, AdminHotMng, AdminUsrMng, AdminBookMng} from './pages'
 
 
 
@@ -47,9 +47,32 @@ const router = createBrowserRouter([
         element: <Hotel/>
       },
       {
-        path: '/bookings/:bookingId',
-        element: <BookingDetails/>
+        path: '/booking/:bookingId',
+        element: <BookingDetailsPage/>
+      },
+      {
+        path: "/admin",
+        element: <Admin/>,
+        children:[
+          {
+            path: "",
+            element: <AdminDash/>
+          },
+          {
+            path: "/admin/booking",
+            element: <AdminBookMng/>
+          },
+          {
+            path: "/admin/hotel",
+            element: <AdminHotMng/>
+          },
+          {
+            path: "/admin/user",
+            element: <AdminUsrMng/>
+          }
+        ]
       }
+
     ]
   }
 ])

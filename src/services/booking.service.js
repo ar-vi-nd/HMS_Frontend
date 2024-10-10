@@ -18,6 +18,7 @@ const bookHotelService = async function({hotelId,checkInDate,checkOutDate,roomTy
     )
     const data = await response.json()
     console.log(data)
+    return data
 }catch(error){
     console.log('Error booking hotel:', error)
     // Handle the error appropriately
@@ -31,6 +32,7 @@ const getBookingById = async function(id){
         const response = await fetch(`http://localhost:1111/api/booking/${id}`, {credentials: 'include'})
         const data = await response.json()
         console.log(data)
+        return data
     }catch(error){
         console.log('Error getting booking:', error)
     }

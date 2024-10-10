@@ -33,4 +33,21 @@ async function getHotelById(hotelId){
     }
 }
 
-export {getAllHotels,getHotelById,checkAvailability}
+async function deleteHotelById(hotelId){
+    try {
+        const response = await fetch(`http://localhost:1111/api/hotels/${hotelId}`, {
+            method: "DELETE",
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        const data = await response.json()
+        return data
+        
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export {getAllHotels,getHotelById,checkAvailability,deleteHotelById}

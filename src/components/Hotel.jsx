@@ -15,37 +15,37 @@ const Hotel = ({ hotelName, hotelAddress, price, images }) => {
     const [hotelDetails, setHotelDetails] = useState(null);
     const [availableRooms, setAvailableRooms] = useState({});
     const [days, setDays] = useState(0);
-    const [singlerooms, setSingleRooms] = useState(0);
-    const [premiumrooms, setPremiumRooms] = useState(0);
-    const [deluxerooms, setDeluxeRooms] = useState(0);
+    // const [singlerooms, setSingleRooms] = useState(0);
+    // const [premiumrooms, setPremiumRooms] = useState(0);
+    // const [deluxerooms, setDeluxeRooms] = useState(0);
     const navigate = useNavigate()
 
     // Ref for the date picker section
     const datePickerRef = useRef(null);
 
-    const updateSingleRooms = (room) => {
-        setSingleRooms(room);
-    };
-    const updatePremiumRooms = (room) => {
-        setPremiumRooms(room);
-    };
-    const updateDeluxeRooms = (room) => {
-        setDeluxeRooms(room);
-    };
+    // const updateSingleRooms = (room) => {
+    //     setSingleRooms(room);
+    // };
+    // const updatePremiumRooms = (room) => {
+    //     setPremiumRooms(room);
+    // };
+    // const updateDeluxeRooms = (room) => {
+    //     setDeluxeRooms(room);
+    // };
 
 
     const bookHotel = async (roomType,roomCount)=>{
         //bookhotel api call
 
-        console.log(hotelId,checkInDate,checkOutDate,roomType,roomCount);
+        console.log(hotelId,checkInDate,checkOutDate,roomType);
         if(roomCount === 0){
             toast.error("Please select a room");
             return;
         }
-        const response = await bookHotelService({hotelId, checkInDate, checkOutDate, roomType, roomCount});
+        const response = await bookHotelService({hotelId, checkInDate, checkOutDate, roomType});
 
-        console.log(response)
-        navigate(`/booking/${response.data.bookingId}`)
+
+        navigate(`/booking/${response?.data?.bookingId}`)
         
     }
 
@@ -74,6 +74,7 @@ const Hotel = ({ hotelName, hotelAddress, price, images }) => {
             (async () => {
                 const details = await getHotelById(hotelId);
                 setHotelDetails(details?.data?.hotelDetails);
+                console.log(details)
             })();
         }
     }, [hotelId]);
@@ -121,17 +122,16 @@ const Hotel = ({ hotelName, hotelAddress, price, images }) => {
 
                     {/* Room pricing, ratings, and total rooms */}
                     <div className='mb-4'>
-                        <span className='font-semibold'>Total Rooms:</span> {hotelDetails?.roomCounts?.single?.count + hotelDetails?.roomCounts?.double?.count + hotelDetails?.roomCounts?.deluxe?.count || 'N/A'}
+                        <span className='font-semibold'>Total Rooms:</span> {hotelDetails?.roomCounts?.single?.count + hotelDetails?.roomCounts?.premium?.count + hotelDetails?.roomCounts?.deluxe?.count || 'N/A'}
                     </div>
 
                     <div className='flex items-center mb-4'>
                         <span className='m-2'>Starting from</span>
                         <span className='text-xl font-bold mr-2'>${hotelDetails?.roomCounts?.single?.price || price}/night</span>
-                        {hotelDetails?.ratings && (
                             <span className='bg-green-500 text-white text-sm px-2 py-1 rounded'>
-                                {hotelDetails.ratings.average} / 5 ({hotelDetails.ratings.count} reviews)
+                                {4.5} / 5 ({35} reviews)
                             </span>
-                        )}
+                        
                     </div>
 
                     {/* Book Now Button */}
@@ -154,9 +154,9 @@ const Hotel = ({ hotelName, hotelAddress, price, images }) => {
 
             {/* Room Cards */}
             <div className='mt-8'>
-                <RoomCard key={"Single"} type={"Single"} totalRooms={hotelDetails?.roomCounts?.count} price={hotelDetails?.roomCounts?.single?.price} services={["Wi-Fi", "Free Breakfast"]} availableRooms={availableRooms?.single?.length} days={days} rooms={singlerooms} updateRooms={updateSingleRooms} bookHotel={bookHotel}/>
-                <RoomCard key={"Premium"} type={"Premium"} totalRooms={hotelDetails?.roomCounts?.count} price={hotelDetails?.roomCounts?.double?.price} services={["Wi-Fi", "Mini Bar", "Gym & Spa"]} availableRooms={availableRooms?.double?.length} days={days} rooms={premiumrooms} updateRooms={updatePremiumRooms} bookHotel={bookHotel}/>
-                <RoomCard key={"Deluxe"} type={"Deluxe"} totalRooms={hotelDetails?.roomCounts?.count} price={hotelDetails?.roomCounts?.deluxe?.price} services={["Free Cab", "Air Conditioning", "Mini-Bar", "Private Pool", "Gym & Spa"]} availableRooms={availableRooms?.deluxe?.length} days={days} rooms={deluxerooms} updateRooms={updateDeluxeRooms} bookHotel={bookHotel}/>
+                <RoomCard key={"Single"} type={"Single"} totalRooms={hotelDetails?.roomCounts?.count} price={hotelDetails?.roomCounts?.single?.price} services={["Wi-Fi", "Free Breakfast"]} availableRooms={availableRooms?.single?.length} days={days}  bookHotel={bookHotel}/>
+                <RoomCard key={"Premium"} type={"Premium"} totalRooms={hotelDetails?.roomCounts?.count} price={hotelDetails?.roomCounts?.premium?.price} services={["Wi-Fi", "Mini Bar", "Gym & Spa"]} availableRooms={availableRooms?.premium?.length} days={days}  bookHotel={bookHotel}/>
+                <RoomCard key={"Deluxe"} type={"Deluxe"} totalRooms={hotelDetails?.roomCounts?.count} price={hotelDetails?.roomCounts?.deluxe?.price} services={["Free Cab", "Air Conditioning", "Mini-Bar", "Private Pool", "Gym & Spa"]} availableRooms={availableRooms?.deluxe?.length} days={days} bookHotel={bookHotel}/>
             </div>
 
             <ToastContainer />

@@ -16,7 +16,10 @@ import Hotel from "./Hotel";
 import Scrollbar from "./Scrollbar";
 import DatePicker from "./DatePicker";
 import RoomCard from "./RoomCard";
+import BookingDetails from "./BookingDetails";
+import HotelItem from "./HotelItem";
+import HotelList from "./HotelList";
 
 export {
-    Header,Footer,Search,Input,Button,Card,RecentSearches,DestinationCard,TrendingDestinations, Login, FormInput, Signup, Checkbox, HotelCard, Hotel, Scrollbar, DatePicker, RoomCard
+    Header,Footer,Search,Input,Button,Card,RecentSearches,DestinationCard,TrendingDestinations, Login, FormInput, Signup, Checkbox, HotelCard, Hotel, Scrollbar, DatePicker, RoomCard,BookingDetails,HotelItem,HotelList
 }
