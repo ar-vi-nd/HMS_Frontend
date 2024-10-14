@@ -9,7 +9,7 @@ import { bookHotelService } from '../services/booking.service';
 import { useNavigate } from 'react-router';
 
 
-const Hotel = ({ hotelName, hotelAddress, price }) => {
+const Hotel = () => {
     const { hotelId } = useParams();
     const [hotelDetails, setHotelDetails] = useState(null);
     const [availableRooms, setAvailableRooms] = useState({});
@@ -47,6 +47,9 @@ const Hotel = ({ hotelName, hotelAddress, price }) => {
 
         if(!response.success){
             toast.error(response?.error?.message)
+            setTimeout(() => {
+                navigate(`/login?redirectTo=/hotels/${hotelId}`)
+            }, 2000);
         }else{
             toast.success("Hotel booked successfully!")
         navigate(`/booking/${response?.data?.bookingId}`)
@@ -135,7 +138,7 @@ const Hotel = ({ hotelName, hotelAddress, price }) => {
 
                     <div className='flex items-center mb-4'>
                         <span className='m-2'>Starting from</span>
-                        <span className='text-xl font-bold mr-2'>${hotelDetails?.roomCounts?.single?.price || price}/night</span>
+                        <span className='text-xl font-bold mr-2'>${hotelDetails?.roomCounts?.single?.price}/night</span>
                             <span className='bg-green-500 text-white text-sm px-2 py-1 rounded'>
                                 {4.5} / 5 ({35} reviews)
                             </span>

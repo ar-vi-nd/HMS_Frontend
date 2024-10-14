@@ -15,6 +15,7 @@ const Login = () => {
     const [showPasswordInfo, setShowPasswordInfo] = useState(false);
     const { isSubmitting, isSubmitted, isSubmitSuccessful } = formState;
     const { isLoggedIn, login, logout } = useContext(UserContext);
+    
 
 
     //   const email = watch("email", "");
@@ -40,7 +41,13 @@ const Login = () => {
                 toast.success("Logged in successfully!");
                 login(response?.data?.user)
                 localStorage.setItem("userContext", JSON.stringify(response?.data?.user))
-                navigate("/");
+                const redirectTo = new URLSearchParams(window.location.search).get("redirectTo")||"";
+                console.log(redirectTo);
+                if (redirectTo) {
+                    navigate(redirectTo);
+                } else {
+                    navigate("/");
+                }
             }
             if (!response?.success) {
                 toast.error(response?.error?.message

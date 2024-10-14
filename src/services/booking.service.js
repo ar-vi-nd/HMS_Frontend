@@ -88,6 +88,7 @@ const toggleBookingStatus = async function(bookingId){
 }
 
 const getUserBookings = async function(userId){
+    console.log(userId);
     try {
 
         const response = await fetch(`http://localhost:1111/api/bookings/${userId}`, {
@@ -102,4 +103,19 @@ const getUserBookings = async function(userId){
     }
 }
 
-export { bookHotelService, getBookingById, getAllBookings, toggleBookingStatus, getUserBookings };
+const cancelBooking = async function(bookingId){
+    try {
+        const response = await fetch(`http://localhost:1111/api/booking/${bookingId}`, {
+            method: "PATCH",
+            credentials: "include",
+        });
+        const data = await response.json();
+        console.log(data);
+        return data
+        
+    } catch (error) {
+        
+    }
+}
+
+export { bookHotelService, getBookingById, getAllBookings, toggleBookingStatus, getUserBookings , cancelBooking};

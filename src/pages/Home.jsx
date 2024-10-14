@@ -1,9 +1,12 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { Search, RecentSearches, TrendingDestinations } from '../components';
 import useHotelSearch from '../hooks/useHotelSearch';
 
 
 function Home(){
+
+    const [limit, setLimit] = useState(10);
+    const [sort, setSort] = useState("asc");
 
     const {location, setLocation,navigateToHotel} = useHotelSearch()
  
@@ -22,7 +25,7 @@ function Home(){
 
 
         <div className='md:mx-32'>
-        <Search location={location} setLocation={setLocation} action={navigateToHotel}>Search</Search>
+        <Search location={location} setLocation={setLocation} action={navigateToHotel} sort={sort} setSort={setSort} limit={limit} setLimit={setLimit}>Search</Search>
         <RecentSearches/>
         <TrendingDestinations/>
         </div>

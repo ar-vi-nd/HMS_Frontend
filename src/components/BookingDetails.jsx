@@ -74,7 +74,7 @@ const BookingDetails = () => {
           </tr>
           <tr>
             <td className="border px-4 py-2 font-semibold">Total Price</td>
-            <td className="border px-4 py-2">${rooms[0].totalCost*rooms?.length}</td>
+            <td className="border px-4 py-2">${bookingDetails?.totalCost}</td>
           </tr>
           <tr>
             <td className="border px-4 py-2 font-semibold">Status</td>

@@ -9,7 +9,7 @@ import { ToastContainer, toast } from "react-toastify";
 
 const Header = () => {
   const [isOpen,setIsOpen] = useState(false)
-  const { isLoggedIn, login, logout } = useContext(UserContext);
+  const { isLoggedIn, login, logout, user } = useContext(UserContext);
   const navigate = useNavigate();
 
   const navItems = [
@@ -114,6 +114,15 @@ const Header = () => {
                     }}
                   >
                     Profile
+                  </Link>
+                  <Link
+                    to={`/bookings/${user._id}`}
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    onClick={() => {
+                      setIsOpen(false);
+                    }}
+                  >
+                    My Bookings
                   </Link>
                   <button
                     onClick={handleLogout}

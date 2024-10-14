@@ -27,7 +27,8 @@ import UserList from "./UserList";
 import BookingList from "./BookingList";
 import BookingItem from "./BookingItem";
 import Profile from "./Profile";
+import BookingCard from "./BookingCard";
 
 export {
-    Header,Footer,Search,Input,Button,Card,RecentSearches,DestinationCard,TrendingDestinations, Login, FormInput, Signup, Checkbox, HotelCard, Hotel, Scrollbar, DatePicker, RoomCard,BookingDetails,HotelItem,HotelList,AdminHotelSearch,SelectBox, HotelForm, UserItem,UserList, BookingList, BookingItem, Profile
+    Header,Footer,Search,Input,Button,Card,RecentSearches,DestinationCard,TrendingDestinations, Login, FormInput, Signup, Checkbox, HotelCard, Hotel, Scrollbar, DatePicker, RoomCard,BookingDetails,HotelItem,HotelList,AdminHotelSearch,SelectBox, HotelForm, UserItem,UserList, BookingList, BookingItem, Profile,BookingCard
 }
