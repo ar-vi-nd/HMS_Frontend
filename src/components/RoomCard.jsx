@@ -1,7 +1,8 @@
 import React from "react";
 
-const RoomCard = ({ type, availableRooms=0, price, services, days=0 , bookHotel}) => {
-  const totalPrice = price * days;
+const RoomCard = ({ type, availableRooms=0, price, services, days=0 , bookHotel, rooms,updateRooms}) => {
+  const totalPrice = price * days*rooms;
+  console.log(rooms)
 
   return (
     <div
@@ -52,12 +53,12 @@ const RoomCard = ({ type, availableRooms=0, price, services, days=0 , bookHotel}
           <input
             type="number"
             id="rooms"
-            min="1"
+            min="0"
             max={availableRooms}
-            value={1}
-            onChange={(e)=>(updateRooms(e.target.value))}
+            value={rooms}
+            onChange={(e)=>(updateRooms(Number(e.target.value)))}
             className="border rounded p-1 w-16 text-center text-sm"
-            disabled={true}
+            
             />
         </div>
         <div className="text-right">
@@ -70,7 +71,7 @@ const RoomCard = ({ type, availableRooms=0, price, services, days=0 , bookHotel}
 
       {/* Book Now Button */}
       <div className="mt-4 flex justify-center">
-        <button onClick={()=>(bookHotel(type.toLowerCase()))} disabled={days===0||availableRooms===0} className="bg-blue-600 text-white font-semibold py-2 px-6 rounded-full shadow-md hover:bg-blue-700 transition duration-200 disabled:bg-gray-400">
+        <button onClick={()=>(bookHotel(type.toLowerCase(),rooms))} disabled={days===0||availableRooms===0||rooms===0} className="bg-blue-600 text-white font-semibold py-2 px-6 rounded-full shadow-md hover:bg-blue-700 transition duration-200 disabled:bg-gray-400">
           Book Now
         </button>
       </div>

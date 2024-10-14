@@ -1,4 +1,4 @@
-const userSignup = async ({ email, password, name }) => {
+const userSignup = async ({ email, password, name , phoneNo }) => {
     try {
         console.log(email, password, name)
         const response = await fetch(`http://localhost:1111/auth/register`, {
@@ -6,7 +6,7 @@ const userSignup = async ({ email, password, name }) => {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ email: email, password: password, name: name })
+            body: JSON.stringify({ email: email, password: password, name: name , phoneNo: phoneNo})
         });
 
         const jsondata = await response.json()
@@ -49,7 +49,7 @@ const userLogin = async ({ email, password }) => {
 const userLogout = async()=>{
     try {
         const response = await fetch(`http://localhost:1111/auth/logout`, {
-            method: "POST", // *GET, POST, PUT, DELETE, etc.
+            method: "GET", // *GET, POST, PUT, DELETE, etc.
             credentials: "include",
             headers: {
                 "Content-Type": "application/json",
@@ -69,4 +69,4 @@ const userLogout = async()=>{
     }
 }
 
-export { userSignup, userLogin }
+export { userSignup, userLogin , userLogout}

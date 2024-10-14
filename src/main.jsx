@@ -4,7 +4,7 @@ import App from './App.jsx'
 import './index.css'
 import { UserProvider } from './context/userContext.jsx'
 import { createBrowserRouter,RouterProvider } from 'react-router-dom'
-import {Home,About,Login,Signup,Hotels,Hotel,BookingDetailsPage,Admin, AdminDash, AdminHotMng, AdminUsrMng, AdminBookMng} from './pages'
+import {Home,About,Login,Signup,Hotels,Hotel,BookingDetailsPage,Admin, AdminDash, AdminHotMng, AdminUsrMng, AdminBookMng, HotelFormPage, ProfilePage, BookingsPage} from './pages'
 
 
 
@@ -17,6 +17,11 @@ const router = createBrowserRouter([
       {
         path: "",
         element: <Home/>
+      },
+      {
+        path: "/profile",
+        element: <ProfilePage/>
+
       },
       {
         path: "/about",
@@ -51,6 +56,10 @@ const router = createBrowserRouter([
         element: <BookingDetailsPage/>
       },
       {
+        path: '/bookings',
+        element: <BookingsPage/>
+      },
+      {
         path: "/admin",
         element: <Admin/>,
         children:[
@@ -65,6 +74,10 @@ const router = createBrowserRouter([
           {
             path: "/admin/hotel",
             element: <AdminHotMng/>
+          },
+          {
+            path: "/admin/addhotel",
+            element: <HotelFormPage/>
           },
           {
             path: "/admin/user",

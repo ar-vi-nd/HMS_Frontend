@@ -5,7 +5,7 @@ import useHotelSearch from '../hooks/useHotelSearch';
 
 function Home(){
 
-    const {location, setLocation, checkInDate, setCheckInDate, checkOutDate, setCheckOutDate, navigateToHotel, searchHotels,} = useHotelSearch()
+    const {location, setLocation,navigateToHotel} = useHotelSearch()
  
     return (
         <div className="home-page">
@@ -22,7 +22,7 @@ function Home(){
 
 
         <div className='md:mx-32'>
-        <Search location={location} setLocation={setLocation} checkInDate={checkInDate} setCheckInDate={setCheckInDate} checkOutDate={checkOutDate} setCheckOutDate={setCheckOutDate} action={navigateToHotel}>Search</Search>
+        <Search location={location} setLocation={setLocation} action={navigateToHotel}>Search</Search>
         <RecentSearches/>
         <TrendingDestinations/>
         </div>

@@ -11,6 +11,10 @@ import AdminBookMng from "./AdminBookMng.jsx";
 import AdminDash from "./AdminDash.jsx";
 import AdminHotMng from "./AdminHotMng.jsx";
 import AdminUsrMng from "./AdminUsrMng.jsx";
+import HotelFormPage from "./HotelFormPage.jsx";
+import ProfilePage from "./ProfilePage.jsx";
+import BookingsPage from "./BookingsPage.jsx";
+
 
 export {
     Home ,
@@ -25,4 +29,7 @@ export {
     AdminDash,
     AdminHotMng,
     AdminUsrMng,
+    HotelFormPage,
+    ProfilePage,
+    BookingsPage,
 }

@@ -1,7 +1,7 @@
-async function getAllHotels(page,limit,city){
+async function getAllHotels(page,limit,city="",sort){
     try{
 
-        const response = await fetch(`http://localhost:1111/api/hotels?page=${page}&limit=${limit}&city=${city}`)
+        const response = await fetch(`http://localhost:1111/api/hotels?page=${page}&limit=${limit}&city=${city}&sort=${sort}`)
         const data = await response.json()
         return data
     }
@@ -50,4 +50,36 @@ async function deleteHotelById(hotelId){
     }
 }
 
-export {getAllHotels,getHotelById,checkAvailability,deleteHotelById}
+async function addHotel({name,owner,address,contact,pictures,roomCounts}){
+    try {
+        console.log({name,owner,address,contact,pictures,roomCounts})
+
+        const formData = new FormData();
+
+        // Append the other form data
+        formData.append("name", name);
+        formData.append("owner",owner);
+        formData.append("address", JSON.stringify(address)); // Convert address to string
+        formData.append("contact", JSON.stringify(contact)); // Convert contact to string
+        formData.append("roomCounts", JSON.stringify(roomCounts)); // Convert room
+      
+        // Append pictures (files)
+        pictures.forEach((file) => {
+          formData.append("pictures", file[0]); // Append each file
+        });
+      
+        const response = await fetch(`http://localhost:1111/api/hotels`, {
+            method: "POST",
+            credentials: 'include',
+            body: formData
+        })
+        const data = await response.json()
+        return data
+        
+    } catch (error) {
+        console.log(error)
+    }
+
+}
+
+export {getAllHotels,getHotelById,checkAvailability,deleteHotelById,addHotel}

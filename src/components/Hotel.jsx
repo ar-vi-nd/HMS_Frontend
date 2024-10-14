@@ -9,43 +9,51 @@ import { bookHotelService } from '../services/booking.service';
 import { useNavigate } from 'react-router';
 
 
-const Hotel = ({ hotelName, hotelAddress, price, images }) => {
-    const [mainImage, setMainImage] = useState(images[0]);
+const Hotel = ({ hotelName, hotelAddress, price }) => {
     const { hotelId } = useParams();
     const [hotelDetails, setHotelDetails] = useState(null);
     const [availableRooms, setAvailableRooms] = useState({});
     const [days, setDays] = useState(0);
-    // const [singlerooms, setSingleRooms] = useState(0);
-    // const [premiumrooms, setPremiumRooms] = useState(0);
-    // const [deluxerooms, setDeluxeRooms] = useState(0);
+    const [mainImage, setMainImage] = useState("");
+
+    const [singlerooms, setSingleRooms] = useState(0);
+    const [premiumrooms, setPremiumRooms] = useState(0);
+    const [deluxerooms, setDeluxeRooms] = useState(0);
     const navigate = useNavigate()
 
     // Ref for the date picker section
     const datePickerRef = useRef(null);
 
-    // const updateSingleRooms = (room) => {
-    //     setSingleRooms(room);
-    // };
-    // const updatePremiumRooms = (room) => {
-    //     setPremiumRooms(room);
-    // };
-    // const updateDeluxeRooms = (room) => {
-    //     setDeluxeRooms(room);
-    // };
+    const updateSingleRooms = (room) => {
+        setSingleRooms(room);
+    };
+    const updatePremiumRooms = (room) => {
+        setPremiumRooms(room);
+    };
+    const updateDeluxeRooms = (room) => {
+        setDeluxeRooms(room);
+    };
 
 
     const bookHotel = async (roomType,roomCount)=>{
         //bookhotel api call
 
-        console.log(hotelId,checkInDate,checkOutDate,roomType);
+        console.log(hotelId,checkInDate,checkOutDate,roomType,roomCount);
         if(roomCount === 0){
             toast.error("Please select a room");
             return;
         }
-        const response = await bookHotelService({hotelId, checkInDate, checkOutDate, roomType});
+        const response = await bookHotelService({hotelId, checkInDate, checkOutDate, roomType,roomCount});
 
-
+        if(!response.success){
+            toast.error(response?.error?.message)
+        }else{
+            toast.success("Hotel booked successfully!")
         navigate(`/booking/${response?.data?.bookingId}`)
+
+        }
+
+
         
     }
 
@@ -74,7 +82,7 @@ const Hotel = ({ hotelName, hotelAddress, price, images }) => {
             (async () => {
                 const details = await getHotelById(hotelId);
                 setHotelDetails(details?.data?.hotelDetails);
-                console.log(details)
+                setMainImage(details?.data?.hotelDetails?.pictures[0]);
             })();
         }
     }, [hotelId]);
@@ -95,7 +103,7 @@ const Hotel = ({ hotelName, hotelAddress, price, images }) => {
                     </div>
 
                     <div className='mt-4 w-full overflow-x-auto flex'>
-                        <Scrollbar images={images} handleImageClick={handleImageClick} />
+                       { <Scrollbar images={hotelDetails?.pictures} handleImageClick={handleImageClick} />}
                     </div>
                 </div>
 
@@ -154,9 +162,9 @@ const Hotel = ({ hotelName, hotelAddress, price, images }) => {
 
             {/* Room Cards */}
             <div className='mt-8'>
-                <RoomCard key={"Single"} type={"Single"} totalRooms={hotelDetails?.roomCounts?.count} price={hotelDetails?.roomCounts?.single?.price} services={["Wi-Fi", "Free Breakfast"]} availableRooms={availableRooms?.single?.length} days={days}  bookHotel={bookHotel}/>
-                <RoomCard key={"Premium"} type={"Premium"} totalRooms={hotelDetails?.roomCounts?.count} price={hotelDetails?.roomCounts?.premium?.price} services={["Wi-Fi", "Mini Bar", "Gym & Spa"]} availableRooms={availableRooms?.premium?.length} days={days}  bookHotel={bookHotel}/>
-                <RoomCard key={"Deluxe"} type={"Deluxe"} totalRooms={hotelDetails?.roomCounts?.count} price={hotelDetails?.roomCounts?.deluxe?.price} services={["Free Cab", "Air Conditioning", "Mini-Bar", "Private Pool", "Gym & Spa"]} availableRooms={availableRooms?.deluxe?.length} days={days} bookHotel={bookHotel}/>
+                <RoomCard key={"Single"} rooms={singlerooms} updateRooms={updateSingleRooms} type={"Single"} totalRooms={hotelDetails?.roomCounts?.count} price={hotelDetails?.roomCounts?.single?.price} services={["Wi-Fi", "Free Breakfast"]} availableRooms={availableRooms?.single?.length} days={days}  bookHotel={bookHotel}/>
+                <RoomCard key={"Premium"} rooms={premiumrooms} updateRooms={updatePremiumRooms} type={"Premium"} totalRooms={hotelDetails?.roomCounts?.count} price={hotelDetails?.roomCounts?.premium?.price} services={["Wi-Fi", "Mini Bar", "Gym & Spa"]} availableRooms={availableRooms?.premium?.length} days={days}  bookHotel={bookHotel}/>
+                <RoomCard key={"Deluxe"} rooms={deluxerooms} updateRooms={updateDeluxeRooms} type={"Deluxe"} totalRooms={hotelDetails?.roomCounts?.count} price={hotelDetails?.roomCounts?.deluxe?.price} services={["Free Cab", "Air Conditioning", "Mini-Bar", "Private Pool", "Gym & Spa"]} availableRooms={availableRooms?.deluxe?.length} days={days} bookHotel={bookHotel}/>
             </div>
 
             <ToastContainer />

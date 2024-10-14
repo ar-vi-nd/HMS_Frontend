@@ -4,6 +4,8 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from "../context/userContext";
 import booking from "../assets/booking.png";
+import { userLogout } from "../services/auth.service";
+import { ToastContainer, toast } from "react-toastify";
 
 const Header = () => {
   const [isOpen,setIsOpen] = useState(false)
@@ -21,13 +23,32 @@ const Header = () => {
     setIsOpen(!isOpen)
   }
 
+  async function handleLogout(){
+
+    try {
+
+     const response =  await userLogout()
+      if(response?.success){
+        toast.success("Logged out successfully!")
+        logout()
+        localStorage.removeItem("userContext")
+        setIsOpen(false)
+        navigate("/")
+      }
+      
+    } catch (error) {
+      console.log(error)
+    }
+
+  }
+
   return (
     <nav className="bg-blue-800 border-b border-amber-300">
       <div className="container mx-auto flex items-center justify-between py-4 px-6">
         {/* Logo */}
         <div className="text-2xl font-bold">
           <Link to="/">
-            <img src={booking} alt="Logo" className="h-16 w-auto" />
+            <img src={booking} alt="Logo" className="h-4 w-auto" />
           </Link>
         </div>
 
@@ -88,12 +109,15 @@ const Header = () => {
                   <Link
                     to="/profile"
                     className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    onClick={() => {
+                      setIsOpen(false);
+                    }}
                   >
                     Profile
                   </Link>
                   <button
-                    onClick={() => logout()}
-                    className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    onClick={handleLogout}
+                    className="w-full text-left px-4 py-2 text-gray-700 hover:bg-red-500"
                   >
                     Logout
                   </button>
@@ -134,6 +158,7 @@ const Header = () => {
           </button>
         </div>
       </div>
+      <ToastContainer />
     </nav>
   );
 };

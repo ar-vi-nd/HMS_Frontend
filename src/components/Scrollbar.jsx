@@ -14,14 +14,14 @@ export default ({images ,handleImageClick}) => {
       // install Swiper modules
       modules={[Navigation, Pagination, Scrollbar, A11y]}
       spaceBetween={10}
-      slidesPerView={5}
+      slidesPerView={3}
       navigation
       pagination={{ clickable: true }}
     //   scrollbar={{ draggable: true }}
-      onSwiper={(swiper) => console.log(swiper)}
       onSlideChange={() => console.log('slide change')}
     >
-    {images.map((image, index) => (
+    {images?.length && images.map((image, index) => (
+        
                 <SwiperSlide key={index}>
                   <img
                     src={image}

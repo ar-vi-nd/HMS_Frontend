@@ -31,7 +31,7 @@ const BookingDetails = () => {
 
   if (!bookingDetails) return <div className="text-center text-gray-500">No booking details available.</div>
 
-  const { hotelName, roomNo, roomType, address, contact, checkIn, checkOut, days, totalPrice, status } = bookingDetails
+  const { rooms,status,userId , hotelId } = bookingDetails
 
   return (
     <div className="max-w-lg mx-auto bg-white shadow-md rounded-lg p-6">
@@ -40,41 +40,41 @@ const BookingDetails = () => {
         <tbody>
           <tr>
             <td className="border px-4 py-2 font-semibold">Hotel Name</td>
-            <td className="border px-4 py-2">{bookingDetails?.roomId?.hotelId?.name}</td>
+            <td className="border px-4 py-2">{hotelId?.name}</td>
           </tr>
           <tr>
-            <td className="border px-4 py-2 font-semibold">Room No</td>
-            <td className="border px-4 py-2">{bookingDetails?.roomId?.roomNumber}</td>
+            <td className="border px-4 py-2 font-semibold">No of Rooms</td>
+            <td className="border px-4 py-2">{rooms?.length}</td>
           </tr>
           <tr>
             <td className="border px-4 py-2 font-semibold">Room Type</td>
-            <td className="border px-4 py-2">{bookingDetails?.roomId?.type}</td>
+            <td className="border px-4 py-2">{rooms[0]?.roomId?.type}</td>
           </tr>
           <tr>
             <td className="border px-4 py-2 font-semibold">Address</td>
-            <td className="border px-4 py-2">{bookingDetails?.roomId?.hotelId?.address?.city}</td>
+            <td className="border px-4 py-2">{hotelId?.address?.city}</td>
           </tr>
           <tr>
             <td className="border px-4 py-2 font-semibold">Contact</td>
-            <td className="border px-4 py-2">{bookingDetails?.roomId?.hotelId?.contact?.phone}</td>
+            <td className="border px-4 py-2">{hotelId?.contact?.phone}</td>
           </tr>
           <tr>
             <td className="border px-4 py-2 font-semibold">Check-in</td>
-            <td className="border px-4 py-2">{new Date(bookingDetails?.checkInDate).toLocaleDateString()
+            <td className="border px-4 py-2">{new Date(rooms[0]?.checkInDate).toLocaleDateString()
             }</td>
           </tr>
           <tr>
             <td className="border px-4 py-2 font-semibold">Check-out</td>
-            <td className="border px-4 py-2">{new Date(bookingDetails?.checkOutDate).toLocaleDateString()
+            <td className="border px-4 py-2">{new Date(rooms[0]?.checkOutDate).toLocaleDateString()
             }</td>
           </tr>
           <tr>
             <td className="border px-4 py-2 font-semibold">Days</td>
-            <td className="border px-4 py-2">{((new Date(bookingDetails?.checkOutDate) - new Date(bookingDetails?.checkInDate))/(1000 * 60 * 60 * 24)).toLocaleString()}</td>
+            <td className="border px-4 py-2">{((new Date(rooms[0]?.checkOutDate) - new Date(rooms[0]?.checkInDate))/(1000 * 60 * 60 * 24)).toLocaleString()}</td>
           </tr>
           <tr>
             <td className="border px-4 py-2 font-semibold">Total Price</td>
-            <td className="border px-4 py-2">${bookingDetails.totalCost}</td>
+            <td className="border px-4 py-2">${rooms[0].totalCost*rooms?.length}</td>
           </tr>
           <tr>
             <td className="border px-4 py-2 font-semibold">Status</td>
