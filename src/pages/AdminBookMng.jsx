@@ -45,8 +45,8 @@ const fetchBookings = async (search, page,limit,sort) => {
   console.log(search,page,limit,sort)
   const response = await getAllBookings(search,page,limit,sort);
   console.log(response)
-  if (!response) {
-      return toast.error("Error Fetching Hotels");
+  if (!response?.success) {
+      return toast.error(response?.error?.message);
   }
   setBookings(response?.data?.bookings);
   setPage(page)
@@ -76,11 +76,17 @@ useEffect(() => {
 
 const toggleStatus= async function(bookingId){
 
+  try {
+
   const response = await toggleBookingStatus(bookingId);
   if(!response){
     return toast.error("Error Updating User Status");
   }
   fetchBookings(search,page, limit, sort);
+
+} catch (error) {
+    toast.error(error?.message)
+}
 
 
  }

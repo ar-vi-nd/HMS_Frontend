@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { HotelList, AdminHotelSearch } from '../components';
 // import { getHotels, deleteHotel } from '../services/hotel.service';  // Assuming you have a service for hotel operations
-import { getAllHotels, deleteHotelById } from '../services/hotel.service';
+import { getAllAdminHotels, deleteHotelById } from '../services/hotel.service';
+import { useNavigate } from 'react-router';
+import { toast } from 'react-toastify';
 
 const AdminHotMng = () => {
+
+    const navigate = useNavigate();
+    
     const [hotels, setHotels] = useState([]);
     const [totalPages, setTotalPages] = useState(0)
     const [page, setPage] = useState(1);
@@ -43,10 +48,10 @@ const AdminHotMng = () => {
             location,
             sort
         );
-        const response = await getAllHotels(page, limit, location, sort);
+        const response = await getAllAdminHotels(page, limit, location, sort);
         console.log(response)
-        if (!response) {
-            return toast.error("Error Fetching Hotels");
+        if (!response?.success) {
+            return toast.error(response?.error?.message);
         }
         setHotels(response?.data?.hotels);
         setTotalPages(Math.ceil(response?.data?.totalHotels / limit) || 1);
@@ -78,20 +83,41 @@ const AdminHotMng = () => {
     }, [window.location.href]);
 
     const handleDeleteHotel = async (hotelId) => {
-        const response = await deleteHotelById(hotelId);
-        console.log(response)
-        setHotels(hotels.filter(hotel => hotel._id !== response?.data?.hotel?._id));
+        
+        try {
+            const response = await deleteHotelById(hotelId);
+            console.log(response)
+            if (!response.success) {
+                toast.error(response?.error?.message);
+            } else {
+                toast.success("Hotel deleted successfully!");
+            setHotels(hotels.filter(hotel => hotel._id !== response?.data?.hotel?._id));
+
+            }
+        } catch (error) {
+
+            console.log("Error deleting hotel", error);
+            
+        }
     };
 
     const handleUpdateHotel = (hotelId) => {
         // Navigate to an update form or handle hotel update logic
         console.log(`Update hotel: ${hotelId}`);
+        navigate(`/admin/updatehotel/${hotelId}`, { replace: true });
+        
+    };
+
+    const handleViewHotel = (hotelId) => {
+        // Navigate to a view form or handle hotel view logic
+        console.log(`View hotel: ${hotelId}`);
+        navigate(`/admin/viewhotel/${hotelId}`, { replace: true });
     };
 
     return (
         <div className="hotel-management">
             <AdminHotelSearch action={() => { fetchHotels(1, limit, location, sort) }} setLocation={setLocation} sort={sort} setSort={setSort} limit={limit} setLimit={setLimit} />
-            <HotelList hotels={hotels} onDelete={handleDeleteHotel} onUpdate={handleUpdateHotel} />
+            <HotelList hotels={hotels} onDelete={handleDeleteHotel} onUpdate={handleUpdateHotel} onView={handleViewHotel}/>
 
             <div className="flex justify-center items-center space-x-4 my-8">
                 <button

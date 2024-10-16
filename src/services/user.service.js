@@ -11,7 +11,7 @@ const getAllUsers = async function(search,page,limit,sort){
         const data = await response.json()
         return data
     } catch (error) {
-        
+        console.log(error)
     }
 }
 
@@ -29,7 +29,7 @@ const toggleUserStatus = async function(userId){
         const data = await response.json()
         return data
     } catch (error) {
-        
+        console.log(error)
     }
 }
 
@@ -46,6 +46,7 @@ const updateUserProfile = async function(userId, profile){
         }
         )
         const data = await response.json()
+        console.log(data)
         return data
     } catch (error) {
         console.log(error)

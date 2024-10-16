@@ -69,4 +69,29 @@ const userLogout = async()=>{
     }
 }
 
-export { userSignup, userLogin , userLogout}
+const adminLogin =  async ({ email, password }) => {
+    try {
+        console.log(email, password)
+        const response = await fetch(`http://localhost:1111/admin/login`, {
+            method: "POST", // *GET, POST, PUT, DELETE, etc.
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+
+            },
+            body: JSON.stringify({ email: email, password: password })
+        });
+
+        const jsondata = await response.json()
+
+        console.log(jsondata)
+        return jsondata
+
+    } catch (error) {
+
+        console.log("error logging in, ", error)
+
+    }
+}
+
+export { userSignup, userLogin , userLogout, adminLogin}

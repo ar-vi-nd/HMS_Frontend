@@ -10,6 +10,23 @@ async function getAllHotels(page,limit,city="",sort){
     }
 }
 
+async function getAllAdminHotels(page,limit,city="",sort){
+    try{
+
+        const response = await fetch(`http://localhost:1111/api/hotels?page=${page}&limit=${limit}&city=${city}&sort=${sort}`,{
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        const data = await response.json()
+        return data
+    }
+    catch(error){
+        console.log(error)
+    }
+}
+
 async function checkAvailability(hotelId, checkInDate, checkOutDate){
     try {
         console.log(checkInDate,checkOutDate)
@@ -82,4 +99,31 @@ async function addHotel({name,owner,address,contact,pictures,roomCounts}){
 
 }
 
-export {getAllHotels,getHotelById,checkAvailability,deleteHotelById,addHotel}
+async function updateHotel(hotelId, data){
+    try {
+
+        console.log(data)
+        const response = await fetch(`http://localhost:1111/api/hotels/${hotelId}`, {
+            method: "PATCH",
+            credentials: 'include',
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+
+        const something = await response.json()
+
+        console.log(something)
+
+        return something  
+
+        
+    } catch (error) {
+
+        console.log(error)
+        
+    }
+}
+
+export {getAllHotels,getHotelById,checkAvailability,deleteHotelById,addHotel, updateHotel, getAllAdminHotels}

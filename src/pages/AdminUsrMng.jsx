@@ -44,8 +44,8 @@ const fetchUsers = async (search, page,limit,sort) => {
   console.log(search,page,limit,sort)
   const response = await getAllUsers(search,page,limit,sort);
   console.log(response)
-  if (!response) {
-      return toast.error("Error Fetching Hotels");
+  if (!response.success) {
+      return toast.error(response?.error?.message);
   }
   setUsers(response?.data?.users);
   setPage(page)

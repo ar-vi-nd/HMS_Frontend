@@ -1,6 +1,6 @@
 import React, { useEffect, useId } from 'react';
 
-const Input = ({ type, value, setValue, placeholder,label }) => {
+const Input = ({ type, value, setValue, placeholder,label, className }) => {
 
     const id = useId(); // Generate a unique id for accessibility purposes
   
@@ -21,7 +21,7 @@ const Input = ({ type, value, setValue, placeholder,label }) => {
       placeholder={placeholder}
       value={value}
       onChange={(e) => setValue(e.target.value)}
-      className="border rounded-lg w-full p-2 md:w-1/5"
+      className={`border rounded-lg md:${className?className:"w-full"}  p-2 `}
       />
     </>
   );

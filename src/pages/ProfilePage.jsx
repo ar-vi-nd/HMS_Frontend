@@ -10,15 +10,17 @@ const ProfilePage = () => {
     const handleUpdate = async (userId,data)=>{
         console.log(userId,data)
         try {
-            const updatedUser = await updateUserProfile(userId,data)
-            if(!updatedUser){
-                toast.error('Failed to update user')
+            const response = await updateUserProfile(userId,data)
+          
+            if(!response?.success){
+                toast.error(response?.error?.message)
                 return
             }else{
-                login(updatedUser?.data?.user)
+                login(response?.data?.user)
             }
             
         } catch (error) {
+            console.log("Consoling error",error)
             toast.error("Failed to Update Profile")
         }
     }

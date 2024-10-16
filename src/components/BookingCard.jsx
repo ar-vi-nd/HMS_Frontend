@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const BookingCard = ({booking, handleCancelBooking}) => {
     return (
@@ -54,7 +55,13 @@ const BookingCard = ({booking, handleCancelBooking}) => {
               </div>
             </div>
     
-            <div className="mt-4 flex justify-end" name="CancelBookingButton">
+            <div className="mt-4 flex justify-evenly" name="CancelBookingButton">
+              <Link
+                className="bg-blue-500 text-white font-semibold px-6 py-2 rounded-lg hover:bg-blue-600"
+                to={`/booking/${booking._id}`}
+              >
+                View Details
+              </Link>
               <button
                 className="bg-red-500 text-white font-semibold px-6 py-2 rounded-lg hover:bg-red-600 disabled:bg-gray-500"
                 onClick={handleCancelBooking}

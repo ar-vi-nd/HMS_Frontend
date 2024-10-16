@@ -1,7 +1,7 @@
 import React from 'react';
 import HotelItem from './HotelItem';
 
-const HotelList = ({ hotels, onDelete, onUpdate }) => {
+const HotelList = ({ hotels, onDelete, onUpdate, onView }) => {
   return (
     <div className="overflow-x-auto">
       {hotels.length > 0 ? (
@@ -22,6 +22,7 @@ const HotelList = ({ hotels, onDelete, onUpdate }) => {
                 hotel={hotel} 
                 onDelete={onDelete} 
                 onUpdate={onUpdate} 
+                onView = {onView}
               />
             ))}
           </tbody>

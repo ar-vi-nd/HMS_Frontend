@@ -1,13 +1,13 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import Scrollbar from './Scrollbar';
 import { DatePicker, RoomCard } from './index';
 import useHotelSearch from '../hooks/useHotelSearch';
-import { checkAvailability, getHotelById } from '../services/hotel.service';
+import { checkAvailability, getHotelById, deleteHotelById } from '../services/hotel.service';
 import { useParams } from 'react-router';
 import { toast, ToastContainer } from 'react-toastify';
 import { bookHotelService } from '../services/booking.service';
 import { useNavigate } from 'react-router';
-
+import { UserContext } from '../context/userContext';
 
 const Hotel = () => {
     const { hotelId } = useParams();
@@ -21,8 +21,11 @@ const Hotel = () => {
     const [deluxerooms, setDeluxeRooms] = useState(0);
     const navigate = useNavigate()
 
+    const {user} = useContext(UserContext)
+
     // Ref for the date picker section
     const datePickerRef = useRef(null);
+    const checkAvailabilityRef = useRef(null);
 
     const updateSingleRooms = (room) => {
         setSingleRooms(room);
@@ -47,9 +50,7 @@ const Hotel = () => {
 
         if(!response.success){
             toast.error(response?.error?.message)
-            setTimeout(() => {
-                navigate(`/login?redirectTo=/hotels/${hotelId}`)
-            }, 2000);
+            navigate(`/login?redirectTo=/hotels/${hotelId}`)
         }else{
             toast.success("Hotel booked successfully!")
         navigate(`/booking/${response?.data?.bookingId}`)
@@ -63,14 +64,22 @@ const Hotel = () => {
     const checkAvailabilityOnClick = async (checkInDate, checkOutDate) => {
         let checkinDate = new Date(checkInDate);
         let checkoutDate = new Date(checkOutDate);
-        if (checkInDate >= checkOutDate) {
+        if (checkInDate >= checkOutDate){
             setDays(0);
             toast.error("Check-out date should be after check-in date");
-        } else {
+        }
+        else if( checkinDate < (new Date()).setHours(0,0,0,0)){
+            setDays(0);
+            toast.error("Check-in date should be today or later");
+        }
+        else {
             const response = await checkAvailability(hotelId, checkInDate, checkOutDate);
             console.log(response)
             setAvailableRooms(response?.data?.availableRooms?.availableRoomsByType);
             setDays((checkoutDate - checkinDate) / (1000 * 60 * 60 * 24));
+            if (checkAvailabilityRef.current) {
+                checkAvailabilityRef.current.scrollIntoView({ behavior: 'smooth' });
+            }
         }
     };
 
@@ -97,8 +106,27 @@ const Hotel = () => {
         datePickerRef.current.scrollIntoView({ behavior: 'smooth' });
     };
 
+    const handleCheckAvailableClick = () => {
+        checkAvailabilityRef.current.scrollIntoView({ behavior:'smooth' });
+    }
+
+    const handleDeleteHotel = async () => {
+        const response = await deleteHotelById(hotelId);
+        console.log(response)
+    
+        if (!response.success) {
+            toast.error(response?.error?.message);
+        }else{
+            navigate("/admin/hotel")
+        };
+    }
+
+    const handleUpdateHotel =  ()=>{
+        navigate(`/admin/updatehotel/${hotelId}`, { replace: true });  
+    }
+
     return (
-        <div className='container mx-auto px-4 py-8'>
+        <div className={`container mx-auto px-4 py-8`}>
             <div className='flex flex-col md:flex-row'>
                 <div className='md:w-1/2'>
                     <div className='h-96 bg-gray-100 flex items-center justify-center'>
@@ -110,7 +138,23 @@ const Hotel = () => {
                     </div>
                 </div>
 
-                <div className='md:w-1/2 px-4 mt-4 md:mt-0'>
+              
+
+                <div className='md:w-1/2 px-4 mt-4 md:mt-0 md:ml-8'>
+
+                {user.isAdmin && <div className='flex justify-start space-x-2 my-2 p-2'><button
+                        onClick={handleUpdateHotel}
+                        className='bg-green-600 text-white py-2 px-6 rounded hover:bg-green-700'
+                    >
+                       Update Hotel
+                    </button>
+                    <button
+                        onClick={handleDeleteHotel}
+                        className='bg-red-600 text-white py-2 px-6 rounded hover:bg-red-700'
+                    >
+                       Delete Hotel
+                    </button></div>}
+               
                     <div className='text-3xl font-bold mb-2'>{hotelDetails?.name}</div>
                     <div className='text-lg text-gray-500 mb-2'>
                         {hotelDetails?.address?.street || "Somewhere"}, {hotelDetails?.address?.city}, {hotelDetails?.address?.country || "India"}
@@ -146,12 +190,13 @@ const Hotel = () => {
                     </div>
 
                     {/* Book Now Button */}
-                    <button
+                    <button 
                         onClick={handleBookNowClick}
-                        className='bg-blue-600 text-white py-2 px-6 rounded hover:bg-blue-700'
+                        className='bg-blue-600 text-white py-2 px-6  rounded hover:bg-blue-700'
                     >
-                        Book Now
+                       Check Availability
                     </button>
+                    
                 </div>
             </div>
 
@@ -160,17 +205,17 @@ const Hotel = () => {
                 <h1 className='text-2xl font-semibold mb-4 text-center md:text-left text-blue-700'>
                     Choose Checkin and Checkout Dates
                 </h1>
-                <DatePicker checkInDate={checkInDate} setCheckInDate={setCheckInDate} checkOutDate={checkOutDate} setCheckOutDate={setCheckOutDate} action={() => checkAvailabilityOnClick(checkInDate, checkOutDate)} />
+                <DatePicker checkInDate={checkInDate} setCheckInDate={setCheckInDate} checkOutDate={checkOutDate} setCheckOutDate={setCheckOutDate}  action={() => checkAvailabilityOnClick(checkInDate, checkOutDate)} />
             </div>
 
             {/* Room Cards */}
-            <div className='mt-8'>
+            <div className='mt-8' ref={checkAvailabilityRef}>
                 <RoomCard key={"Single"} rooms={singlerooms} updateRooms={updateSingleRooms} type={"Single"} totalRooms={hotelDetails?.roomCounts?.count} price={hotelDetails?.roomCounts?.single?.price} services={["Wi-Fi", "Free Breakfast"]} availableRooms={availableRooms?.single?.length} days={days}  bookHotel={bookHotel}/>
                 <RoomCard key={"Premium"} rooms={premiumrooms} updateRooms={updatePremiumRooms} type={"Premium"} totalRooms={hotelDetails?.roomCounts?.count} price={hotelDetails?.roomCounts?.premium?.price} services={["Wi-Fi", "Mini Bar", "Gym & Spa"]} availableRooms={availableRooms?.premium?.length} days={days}  bookHotel={bookHotel}/>
                 <RoomCard key={"Deluxe"} rooms={deluxerooms} updateRooms={updateDeluxeRooms} type={"Deluxe"} totalRooms={hotelDetails?.roomCounts?.count} price={hotelDetails?.roomCounts?.deluxe?.price} services={["Free Cab", "Air Conditioning", "Mini-Bar", "Private Pool", "Gym & Spa"]} availableRooms={availableRooms?.deluxe?.length} days={days} bookHotel={bookHotel}/>
             </div>
 
-            <ToastContainer />
+            {/* <ToastContainer /> */}
         </div>
     );
 };

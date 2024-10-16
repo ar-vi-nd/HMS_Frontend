@@ -31,7 +31,7 @@ const BookingsPage = () => {
     },[])
 
     const handleCancelBooking = async (bookingId)=>{
-
+        try{
         const response = await cancelBooking(bookingId)
         if(!response?.success){
             toast.error(response?.error?.message)
@@ -39,16 +39,20 @@ const BookingsPage = () => {
         if(response?.success){
             toast.success("Booking cancelled successfully!")
             fetchBookings(userId)  // Refresh the bookings list after cancelling a booking
+        }}
+        catch(error){
+            console.log(error)
+            toast.error("Failed to cancel booking")
         }
     }
   return (
-    <div>
+    <div className='min-h-96'>
 
-    {bookings.length!==0 && bookings?.map(booking => (
-        <BookingCard key={booking._id} booking={booking} handleCancelBooking={()=>{handleCancelBooking(booking._id)}} />
-    ))}
+    {bookings.length!==0?(bookings?.map(booking => (
+      <BookingCard key={booking._id} booking={booking} handleCancelBooking={()=>{handleCancelBooking(booking._id)}} /> 
+    ))):<div className='text-xl font-bold text-center m-4'> No Bookings Yet</div>}
 
-    <ToastContainer/>
+    {/* <ToastContainer/> */}
       
     </div>
   )

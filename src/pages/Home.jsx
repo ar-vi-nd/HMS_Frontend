@@ -1,6 +1,7 @@
 import React,{useState} from 'react';
 import { Search, RecentSearches, TrendingDestinations } from '../components';
 import useHotelSearch from '../hooks/useHotelSearch';
+import {Input, Button} from '../components';
 
 
 function Home(){
@@ -25,9 +26,16 @@ function Home(){
 
 
         <div className='md:mx-32'>
-        <Search location={location} setLocation={setLocation} action={navigateToHotel} sort={sort} setSort={setSort} limit={limit} setLimit={setLimit}>Search</Search>
-        <RecentSearches/>
+        {/* <Search location={location} setLocation={setLocation} action={navigateToHotel} sort={sort} setSort={setSort} limit={limit} setLimit={setLimit}>Search For Your Dream Hotel</Search> */}
+    <div className="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-2 p-6 bg-blue-100 rounded-lg shadow-md">
+
+        <Input type={"text"} label="Search" value={location} setValue={setLocation} placeholder={"Enter city or hotel name"} className={"w-40 h-14 p-6"}/>
+      <Button action={navigateToHotel} className={"w-40 h-14 p-6"}>Search Hotel</Button>
+
+      </div>
+
         <TrendingDestinations/>
+        <RecentSearches/>
         </div>
 
       </div>

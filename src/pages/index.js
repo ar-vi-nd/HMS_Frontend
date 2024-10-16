@@ -14,6 +14,8 @@ import AdminUsrMng from "./AdminUsrMng.jsx";
 import HotelFormPage from "./HotelFormPage.jsx";
 import ProfilePage from "./ProfilePage.jsx";
 import BookingsPage from "./BookingsPage.jsx";
+import HotelUpdateFormPage from "./HotelUpdateFormPage.jsx";
+import AdminSignin from "./AdminSignin.jsx";
 
 
 export {
@@ -32,4 +34,6 @@ export {
     HotelFormPage,
     ProfilePage,
     BookingsPage,
+    HotelUpdateFormPage,
+    AdminSignin
 }

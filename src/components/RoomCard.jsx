@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
+import { useNavigate } from 'react-router';
+import { UserContext } from '../context/userContext';
 
 const RoomCard = ({ type, availableRooms=0, price, services, days=0 , bookHotel, rooms,updateRooms}) => {
+    const {user} = useContext(UserContext)
   const totalPrice = price * days*rooms;
   console.log(rooms)
 
@@ -71,9 +74,9 @@ const RoomCard = ({ type, availableRooms=0, price, services, days=0 , bookHotel,
 
       {/* Book Now Button */}
       <div className="mt-4 flex justify-center">
-        <button onClick={()=>(bookHotel(type.toLowerCase(),rooms))} disabled={days===0||availableRooms===0||rooms===0} className="bg-blue-600 text-white font-semibold py-2 px-6 rounded-full shadow-md hover:bg-blue-700 transition duration-200 disabled:bg-gray-400">
+       {!user.isAdmin && <button onClick={()=>(bookHotel(type.toLowerCase(),rooms))} disabled={days===0||availableRooms===0||rooms===0} className="bg-blue-600 text-white font-semibold py-2 px-6 rounded-full shadow-md hover:bg-blue-700 transition duration-200 disabled:bg-gray-400">
           Book Now
-        </button>
+        </button>}
       </div>
     </div>
   );

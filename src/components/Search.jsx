@@ -39,10 +39,10 @@ const limitOptions =[
 
   return (
     <div className="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-4 p-6 bg-blue-100 rounded-lg shadow-md">
-      <Input type={"text"} label="City" value={location} setValue={setLocation} placeholder={"Enter city"}/>
+      <Input type={"text"} label="" value={location} setValue={setLocation} placeholder={"Enter city or hotel name"}/>
       <SelectBox options={sortOptions} sort={sort} setSort={setSort} label={"Sort"}/>
       <SelectBox options={limitOptions} sort={limit} setSort={setLimit} label={"Limit"}/>
-      <Button action={action}>Search</Button>
+      <Button action={action}>Search Hotel</Button>
     </div>
   );
 };

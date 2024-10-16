@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import { getBookingById } from '../services/booking.service'
+import { toast } from 'react-toastify'
+import { cancelBooking } from '../services/booking.service'
 
 const BookingDetails = () => {
   const [bookingDetails, setBookingDetails] = useState(null) // Initialize booking details state to null
@@ -9,22 +11,44 @@ const BookingDetails = () => {
 
   const { bookingId } = useParams()
 
-  useEffect(() => {
-    const fetchBookingDetails = async () => {
-      try {
-        setLoading(true)
-        const booking = await getBookingById(bookingId)
-        setBookingDetails(booking?.data?.booking)  // Set booking details in state
-        console.log(booking?.data?.booking)  // Log fetched booking details for debugging purposes
-      } catch (err) {
-        setError('Error fetching booking details')  // Handle errors
-      } finally {
-        setLoading(false)
+  const fetchBookingDetails = async () => {
+    try {
+      setLoading(true)
+      const booking = await getBookingById(bookingId)
+      if(!booking.success){
+          toast.error(booking?.error?.message)
+      }else{
+          setBookingDetails(booking?.data?.booking)
       }
+        // Set booking details in state
+    // Log fetched booking details for debugging purposes
+    } catch (err) {
+      setError('Error fetching booking details')  // Handle errors
+    } finally {
+      setLoading(false)
     }
+  }
+
+  useEffect(() => {
 
     fetchBookingDetails()
   }, [bookingId])  // Add bookingId as a dependency to run effect only when bookingId changes
+
+  const handleCancelBooking = async (bookingId)=>{
+    try{
+    const response = await cancelBooking(bookingId)
+    if(!response?.success){
+        toast.error(response?.error?.message)
+    }
+    if(response?.success){
+        toast.success("Booking cancelled successfully!") // Refresh the bookings list after cancelling a booking
+        fetchBookingDetails()  // Refresh the booking details after cancelling a booking
+    }}
+    catch(error){
+        console.log(error)
+        toast.error("Failed to cancel booking")
+    }
+}
 
   if (loading) return <div className="text-center text-gray-500">Loading booking details...</div>
   if (error) return <div className="text-center text-red-500">{error}</div>
@@ -82,6 +106,15 @@ const BookingDetails = () => {
           </tr>
         </tbody>
       </table>
+
+      <div className='flex justify-around m-2'>
+      <button className='bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300 disabled:bg-gray-400'
+      disabled={bookingDetails?.status==="CANCELLED"}
+      onClick={()=>{handleCancelBooking(bookingDetails?._id)}}>
+        Cancel Booking
+      </button>
+      </div>
+
     </div>
   )
 }

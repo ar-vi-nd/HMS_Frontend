@@ -12,6 +12,7 @@ const Hotels = () => {
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
     const [sort, setSort] = useState("asc");
+    const [totalHotels, setTotalHotels] = useState(0)
 
     const handlePageChange = (newPage) => {
         setParams(newPage, limit, location, sort);
@@ -56,6 +57,7 @@ const Hotels = () => {
         setHotels(response?.data?.hotels);
         setTotalPages(Math.ceil(response?.data?.totalHotels/limit)||1);
         setPage(page)
+        setTotalHotels(response?.data?.totalHotels)
     };
 
     useEffect(() => {
@@ -82,7 +84,9 @@ const Hotels = () => {
             <div className="md:mx-32">
                 <Search location={location} setLocation={setLocation} action={()=>{fetchHotels(1,limit,location,sort)}} sort={sort} setSort={setSort} limit={limit} setLimit={setLimit} />
 
-                {hotels?.length&&hotels.map((hotel) => (
+                {hotels?.length!==0?(
+                    <><div className='text-xl font-bold m-2'> Total Properties : {totalHotels||0}</div>
+                    {hotels.map((hotel) => (
                     <Link to={`/hotels/${hotel._id}`}  key={hotel._id}>
                     <HotelCard
                         name={hotel.name}
@@ -92,7 +96,10 @@ const Hotels = () => {
                     />
                     </Link>
 
-                ))}
+
+                ))}</>):
+                <div className='text-xl font-bold text-center m-4'> No Hotels Found</div>
+                }
             </div>
 
 
@@ -119,7 +126,7 @@ const Hotels = () => {
 
 
 
-            <ToastContainer />
+            {/* <ToastContainer /> */}
         </div>
     );
 };
