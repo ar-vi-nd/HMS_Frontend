@@ -25,7 +25,6 @@ const Signup = () => {
 
     const formSubmitHandler = async (body) => {
         console.log(body);
-        // Simulating a failed Signup response
 
         const response = await userSignup(body);
 
@@ -36,6 +35,7 @@ const Signup = () => {
             setError({ message: response?.error?.message });
         }
         if(response.success) {
+            toast.success("Signup Successful.")
         navigate("/login")
         }
     };

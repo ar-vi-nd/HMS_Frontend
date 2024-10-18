@@ -23,7 +23,7 @@ const AdminHotelSearch = ({searchLabel,action,setLocation,sort,setSort,limit,set
 
   return (
     <div className="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-4 p-6 bg-blue-100 rounded-lg shadow-md">
-      <Input type={"text"} label={searchLabel||"City"} setValue={setLocation} placeholder={searchLabel?`Enter ${searchLabel}`:"Enter city"}/>
+      <Input type={"text"} label={searchLabel} setValue={setLocation} placeholder={searchLabel?`Enter ${searchLabel}`:"Enter city"}/>
       <SelectBox options={sortOptions} sort={sort} setSort={setSort} label={"Sort"}/>
       <SelectBox options={limitOptions} sort={limit} setSort={setLimit} label={"Limit"}/>
       <Button action={action}>Search</Button>

@@ -116,7 +116,7 @@ const AdminHotMng = () => {
 
     return (
         <div className="hotel-management">
-            <AdminHotelSearch action={() => { fetchHotels(1, limit, location, sort) }} setLocation={setLocation} sort={sort} setSort={setSort} limit={limit} setLimit={setLimit} />
+            <AdminHotelSearch searchLabel={"City or Hotel Name"} action={() => { fetchHotels(1, limit, location, sort) }} setLocation={setLocation} sort={sort} setSort={setSort} limit={limit} setLimit={setLimit} />
             <HotelList hotels={hotels} onDelete={handleDeleteHotel} onUpdate={handleUpdateHotel} onView={handleViewHotel}/>
 
             <div className="flex justify-center items-center space-x-4 my-8">
